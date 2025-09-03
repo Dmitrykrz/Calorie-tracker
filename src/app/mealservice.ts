@@ -20,23 +20,16 @@ export class MealService {
       timestamp: new Date()
     };
     
-    const oldMeals = this.meals();        
-    const newMeals = [...oldMeals, newMeal]; 
-    this.meals.set(newMeals);
+    this.meals.update(currentMeals => [...currentMeals, newMeal]);
   }
 
   getTodayTotal(): number {
     const today = new Date();
-const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
 
-let total = 0;
-for (const meal of this.meals()) {
-  if (meal.timestamp >= todayStart && meal.timestamp <= todayEnd) {
-    total += meal.calories;
-  }
-}
-
-return total;
+    return this.meals()
+      .filter(meal => meal.timestamp >= todayStart && meal.timestamp <= todayEnd)
+      .reduce((total, meal) => total + meal.calories, 0);
   }
 }
