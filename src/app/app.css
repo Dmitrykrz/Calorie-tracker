@@ -13,6 +13,10 @@ h1 {
   color: #333;
   text-align: center;
   margin-bottom: 20px;
+  background: #e7f3ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 h2 {
@@ -22,7 +26,7 @@ h2 {
 }
 
 .add-meal-form {
-  background: #afb5dbc7;
+  background: #e7f3ff;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 20px;

@@ -1,13 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MealService } from './mealservice';
+import { CalorieFilterPipe, CalorieLevel } from './calorie-filter.pipe';
 
 @Component({
   selector: 'app-meal-list',
+  imports: [CalorieFilterPipe],
   styleUrl: './app.css',
   template: `
     <div class="meals-table">
-      @if (meals().length === 0) {
-        <p>No meals added yet.</p>
+      @if ((meals() | calorieFilter: filter()).length === 0) {
+        <p>No meals found for the selected filter.</p>
       } @else {
         <h2>My Meals</h2>
         <table>
@@ -19,7 +21,7 @@ import { MealService } from './mealservice';
             </tr>
           </thead>
           <tbody>
-            @for (meal of meals(); track meal.id) {
+            @for (meal of (meals() | calorieFilter: filter()); track meal.id) {
               <tr>
                 <td>{{ formatTime(meal.timestamp) }}</td>
                 <td>{{ meal.name }}</td>
@@ -35,6 +37,7 @@ import { MealService } from './mealservice';
 export class MealListComponent {
   private mealService = inject(MealService);
   
+  filter = input<CalorieLevel>('all');
   meals = this.mealService.getMeals();
 
   formatTime(timestamp: Date): string {
